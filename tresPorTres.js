@@ -2,7 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 
 const rd = readline.createInterface({
-    input: fs.createReadStream('./info'),  
+    input: fs.createReadStream('./tresPorTres'),  
     console: false
 });
 
