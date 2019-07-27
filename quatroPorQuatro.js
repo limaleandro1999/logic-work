@@ -54,7 +54,7 @@ const verificarSatifabilidade = (campo = [[true]]) => {
     let clausula5 = verificarColunasT(campo);
     
     return diagonalPrincipal && diagonalSecundaria && clausula1 && clausula2 && clausula3 && clausula4 && clausula5;
-}
+};
 
 const verificarLinhas = (campo = [[true]]) => {
     let retorno = true;
@@ -69,7 +69,7 @@ const verificarLinhas = (campo = [[true]]) => {
     }
 
     return retorno;
-}
+};
 
 const verificarColunas = (campo = [[true]]) => {
     let retorno = true;
@@ -84,7 +84,7 @@ const verificarColunas = (campo = [[true]]) => {
     }
 
     return retorno;
-}
+};
 
 const verificarLinhasT = (campo = [[true]]) => {
     let retorno = true;
@@ -107,7 +107,7 @@ const verificarLinhasT = (campo = [[true]]) => {
     }
 
     return retorno;
-}
+};
 
 const verificarColunasT = (campo = [[true]]) => {
     let retorno = true;
@@ -130,7 +130,7 @@ const verificarColunasT = (campo = [[true]]) => {
     }
 
     return retorno;
-}
+};
 
 const verificarQuadrados = (campo = [[true]]) => { 
     let retorno = true;
@@ -152,14 +152,14 @@ const verificarQuadrados = (campo = [[true]]) => {
     }
 
     return retorno;
-}
+};
 
 const escreverNoArquivo = () => {
-    fs.writeFile('arquivo.txt', `p cnf 16 ${55 + quatidadeDeAtomicasVerdadeiras}${conteudoArquivo}`, err => {
+    fs.writeFile('arquivo.txt', `c atomicas de 1 - 16 representam cada posição do campo\np cnf 16 ${55 + quatidadeDeAtomicasVerdadeiras}${conteudoArquivo}`, err => {
         if (err) throw err;
         console.log('escrito')
     });
-}
+};
 
 const numeroAtomica = (linha, coluna) => {
     let numeros = [
@@ -170,4 +170,4 @@ const numeroAtomica = (linha, coluna) => {
     ]
 
     return numeros[linha][coluna];
-}
+};

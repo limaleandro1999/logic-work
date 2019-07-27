@@ -13,10 +13,19 @@ let campoMinado = [
 ];
 
 let count = 0;
+let conteudoArquivo = '';
+let quatidadeDeAtomicasVerdadeiras = 0;
 
 rd.on('line', line => {
     let linhaDoCampo = line.split(',');
-    linhaDoCampo = linhaDoCampo.map(item => item === '1' || item === '1;' ? true : false);
+    linhaDoCampo = linhaDoCampo.map((item, index) => {
+        if(item === '1' || item === '1;'){
+            conteudoArquivo += `\n${numeroAtomica(count, index)}`;
+            quatidadeDeAtomicasVerdadeiras++;
+        }
+
+        return item === '1' || item === '1;' ? true : false
+    });
     campoMinado[count] = linhaDoCampo;
     count ++;
 });
@@ -26,16 +35,23 @@ rd.on('close', () => {
         console.log(campoMinado[i]);
     }
     console.log(verificarSatifabilidade(campoMinado) ? 'Válido' : 'Não Válido');
+    escreverNoArquivo();
 });
 
 const verificarSatifabilidade = (campo = [[true]]) => {
+    conteudoArquivo += verificarQuatidadeDeUns(campo) > 3 ? '\n10' : '';
+    conteudoArquivo += `\n-${numeroAtomica(0, 0)} -${numeroAtomica(1, 1)} -${numeroAtomica(2, 2)}`;
+    conteudoArquivo += `\n-${numeroAtomica(0, 2)} -${numeroAtomica(1, 1)} -${numeroAtomica(2, 0)}`;
+    conteudoArquivo += `\n-${numeroAtomica(0, 0)} -${numeroAtomica(0, 1)} -${numeroAtomica(0, 2)} -${numeroAtomica(1, 0)} -${numeroAtomica(1, 1)} -${numeroAtomica(1, 2)} -${numeroAtomica(2, 0)} -${numeroAtomica(2, 1)} -${numeroAtomica(2, 2)}`;
+    conteudoArquivo += `\n-10 -${numeroAtomica(1, 1)}`;
+
     let diagonalPrincipal = !campo[0][0] || !campo[1][1] || !campo[2][2];
     let diagonalSecundaria = !campo[0][2] || !campo[1][1] || !campo[2][0];
     let clausula1 = verificarTodos(campo);
-    let clausula2 = !(verificarQuatidadeDeUns(campo) > 3 && campo[1][1]); 
+    let clausula2 = !verificarQuatidadeDeUns(campo) > 3 || !campo[1][1]; 
 
     return diagonalPrincipal && diagonalSecundaria && clausula1 && clausula2;
-}
+};
 
 const verificarTodos = (campo = [[true]]) => {
     let retorno = false;
@@ -47,7 +63,7 @@ const verificarTodos = (campo = [[true]]) => {
     });
 
     return retorno;
-}
+};
 
 const verificarQuatidadeDeUns = (campo = [[true]]) => {
     let quatidadeDeUns = 0;
@@ -59,4 +75,21 @@ const verificarQuatidadeDeUns = (campo = [[true]]) => {
     });
 
     return quatidadeDeUns;
-}
+};
+
+const escreverNoArquivo = () => {
+    fs.writeFile('arquivo.txt', `c atomicas de 1 - 9 representam cada posição do campo\nc atomica 10 mostra se o campo tem mais de 3 uns\np cnf 10 ${4 + quatidadeDeAtomicasVerdadeiras}${conteudoArquivo}`, err => {
+        if (err) throw err;
+        console.log('escrito')
+    });
+};
+
+const numeroAtomica = (linha, coluna) => {
+    let numeros = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
+
+    return numeros[linha][coluna];
+};
